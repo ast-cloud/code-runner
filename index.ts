@@ -10,7 +10,7 @@ app.use(express.json());
 
 
 app.get('/test',(req,res)=>{
-    res.send('Hello from test route.');
+    res.send('Hello from test route');
 })
 
 app.post('/cpp', (req, res)=>{
