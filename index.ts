@@ -34,15 +34,16 @@ app.post('/cpp', (req, res)=>{
         }
     });
 
-    const compileCPPCode = spawn('g++', ['-o', './codeFile/cppExecutable', './codeFile/code.cpp']);
-
-    compileCPPCode.stderr.on('data', (data) => {
+    try{
+        const compileCPPCode = spawn('g++', ['-o', './codeFile/cppExecutable', './codeFile/code.cpp']);
+        
+        compileCPPCode.stderr.on('data', (data) => {
             console.error(`Compilation error from stderr : ${data}`);
             res.status(200).json({'Compilation error': data});
         }
-    );
-
-    compileCPPCode.on('close', (code)=>{
+        );
+        
+        compileCPPCode.on('close', (code)=>{
             if(code==0){
                 console.log('Code compiled successfully : g++ process exited with code '+code);
                 //res.status(200).json({'Code compiled successfully': 'g++ process exited with code '+code});
@@ -51,24 +52,35 @@ app.post('/cpp', (req, res)=>{
                 console.log('Compilation error: g++ process exited with code '+code);
             }
         }
-    );
+        );
 
-    const runCPPCode = spawn('./codeFile/cppExecutable');
+    }catch(e){
+        console.error('Error caught in compilation process: '+e);
+    }
 
-    const inputFileStream = fs.createReadStream('./inputFile/input.txt');
 
-    inputFileStream.pipe(runCPPCode.stdin);
+    try{
 
-    var stdOutData = '';
-    runCPPCode.stdout.on('data',function(stdout){
-        console.log('Output from cpp file : '+stdout);
-        stdOutData = stdOutData + String(stdout);
-    });
-
-    runCPPCode.on('close', function(code){
-        console.log('Code executed successfully with exit code : '+code);
-        res.status(200).json({'Output': String(stdOutData)});
-    });
+        const runCPPCode = spawn('./codeFile/cppExecutable');
+        
+        const inputFileStream = fs.createReadStream('./inputFile/input.txt');
+        
+        inputFileStream.pipe(runCPPCode.stdin);
+        
+        var stdOutData = '';
+        runCPPCode.stdout.on('data',function(stdout){
+            console.log('Output from cpp file : '+stdout);
+            stdOutData = stdOutData + String(stdout);
+        });
+        
+        runCPPCode.on('close', function(code){
+            console.log('Code executed successfully with exit code : '+code);
+            res.status(200).json({'Output': String(stdOutData)});
+        });
+        
+    }catch(e){
+        console.error('Error caught in binary execution process: '+e);
+    }
 
 });
 
