@@ -44,7 +44,7 @@ app.post('/c', async (req, res)=>{
     }
     console.log('Code compiled successfully : gcc process exited with code '+compileResult.status);
 
-    const runCCodeResult = spawnSync('./codeFile/cppExecutable', {input: fssync.readFileSync('./inputFile/input.txt'), encoding: 'utf-8'});
+    const runCCodeResult = spawnSync('./codeFile/cExecutable', {input: fssync.readFileSync('./inputFile/input.txt'), encoding: 'utf-8'});
 
     if(runCCodeResult.error){
         res.json({'error':'Runtime error', 'output':String(runCCodeResult.error.message)});
