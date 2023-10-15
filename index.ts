@@ -42,10 +42,14 @@ app.post('/c', async (req, res)=>{
         res.json({'error':'Compilation error', 'output':String(compileResult.stderr)});
         return;
     }
+    else if(compileResult.status!=0){
+        res.json({'error':'Compilation error', 'output':String(compileResult.stderr)});
+        return;
+    }
     console.log('Code compiled successfully : gcc process exited with code '+compileResult.status);
-
+    
     const runCCodeResult = spawnSync('./codeFile/cExecutable', {input: fssync.readFileSync('./inputFile/input.txt'), encoding: 'utf-8'});
-
+    
     if(runCCodeResult.error){
         res.json({'error':'Runtime error', 'output':String(runCCodeResult.error.message)});
         return;
@@ -94,7 +98,7 @@ app.post('/cpp', async (req, res)=>{
     }catch(e){
         throw e;
     }
-
+    
 
     const compileResult = spawnSync('g++', ['-o', './codeFile/cppExecutable', './codeFile/code.cpp']);
 
@@ -103,6 +107,10 @@ app.post('/cpp', async (req, res)=>{
         return;
     }
     else if(compileResult.status===null){
+        res.json({'error':'Compilation error', 'output':String(compileResult.stderr)});
+        return;
+    }
+    else if(compileResult.status!=0){
         res.json({'error':'Compilation error', 'output':String(compileResult.stderr)});
         return;
     }
