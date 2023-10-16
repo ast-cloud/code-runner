@@ -183,17 +183,17 @@ app.post('/java', async (req, res)=>{
     }
     console.log('Code compiled successfully : javac process exited with code '+compileResult.status);
 
-    const runCPPCodeResult = spawnSync('java', ['Codetown'], {input: fssync.readFileSync('./inputFile/input.txt'), encoding: 'utf-8'});
+    const runJavaCodeResult = spawnSync('java', ['Codetown'], {input: fssync.readFileSync('./inputFile/input.txt'), encoding: 'utf-8'});
 
-    if(runCPPCodeResult.error){
-        res.json({'error':'Runtime error', 'output':String(runCPPCodeResult.error.message)});
+    if(runJavaCodeResult.error){
+        res.json({'error':'Runtime error', 'output':String(runJavaCodeResult.error.message)});
         return;
     }
-    else if(runCPPCodeResult.status===null){
-        res.json({'error':'Runtime error', 'output':String(runCPPCodeResult.stderr)});
+    else if(runJavaCodeResult.status===null){
+        res.json({'error':'Runtime error', 'output':String(runJavaCodeResult.stderr)});
         return;
     }
-    res.status(200).json({'error':'none', 'output': String(runCPPCodeResult.stdout)});
+    res.status(200).json({'error':'none', 'output': String(runJavaCodeResult.stdout)});
 
     try {
         fssync.unlinkSync('./codeFile/code.java');
