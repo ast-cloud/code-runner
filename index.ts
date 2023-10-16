@@ -149,7 +149,117 @@ app.post('/cpp', async (req, res)=>{
 
 });
 
+app.post('/java', async (req, res)=>{
 
+
+    try{
+        await fs.writeFile('./codeFile/code.java', req.body.code);
+        console.log('Code file created successfully.')
+    }catch(e){
+        throw e;
+    }
+
+    try{
+        await fs.writeFile('./inputFile/input.txt', req.body.input);
+        console.log('Input file created successfully.')
+    }catch(e){
+        throw e;
+    }
+    
+
+    const compileResult = spawnSync('javac', ['./codeFile/code.java']);
+
+    if(compileResult.error){
+        res.json({'error':'Compilation error', 'output':String(compileResult.error.message)});
+        return;
+    }
+    else if(compileResult.status===null){
+        res.json({'error':'Compilation error', 'output':String(compileResult.stderr)});
+        return;
+    }
+    else if(compileResult.status!=0){
+        res.json({'error':'Compilation error', 'output':String(compileResult.stderr)});
+        return;
+    }
+    console.log('Code compiled successfully : javac process exited with code '+compileResult.status);
+
+    const runCPPCodeResult = spawnSync('java', ['Codetown'], {input: fssync.readFileSync('./inputFile/input.txt'), encoding: 'utf-8'});
+
+    if(runCPPCodeResult.error){
+        res.json({'error':'Runtime error', 'output':String(runCPPCodeResult.error.message)});
+        return;
+    }
+    else if(runCPPCodeResult.status===null){
+        res.json({'error':'Runtime error', 'output':String(runCPPCodeResult.stderr)});
+        return;
+    }
+    res.status(200).json({'error':'none', 'output': String(runCPPCodeResult.stdout)});
+
+    try {
+        fssync.unlinkSync('./codeFile/code.java');
+        console.log(`File ./codeFile/code.java deleted successfully.`);
+    } catch (err) {
+        console.error(`Error deleting the file: ${err}`);
+    }
+    try {
+        fssync.unlinkSync('./codeFile/Codetown.class');
+        console.log(`File ./codeFile/Codetown.class deleted successfully.`);
+    } catch (err) {
+        console.error(`Error deleting the file: ${err}`);
+    }
+    try {
+        fssync.unlinkSync('./inputFile/input.txt');
+        console.log(`File ./inputFile/input.txt deleted successfully.`);
+    } catch (err) {
+        console.error(`Error deleting the file: ${err}`);
+    }
+
+});
+
+app.post('/python', async (req, res)=>{
+
+
+    try{
+        await fs.writeFile('./codeFile/code.py', req.body.code);
+        console.log('Code file created successfully.')
+    }catch(e){
+        throw e;
+    }
+
+    try{
+        await fs.writeFile('./inputFile/input.txt', req.body.input);
+        console.log('Input file created successfully.')
+    }catch(e){
+        throw e;
+    }
+    
+
+    const runPyCodeResult = spawnSync('python3', ['./codeFile/code.py'], {input: fssync.readFileSync('./inputFile/input.txt'), encoding:'utf-8'});
+    
+    if(runPyCodeResult.error){
+        res.json({'error':'Runtime error', 'output':String(runPyCodeResult.error.message)});
+        return;
+    }
+    else if(runPyCodeResult.status===null){
+        res.json({'error':'Runtime error', 'output':String(runPyCodeResult.stderr)});
+        return;
+    }
+    res.status(200).json({'error':'none', 'output': String(runPyCodeResult.stdout)});
+
+    try {
+        fssync.unlinkSync('./codeFile/code.py');
+        console.log(`File ./codeFile/code.py deleted successfully.`);
+    } catch (err) {
+        console.error(`Error deleting the file: ${err}`);
+    }
+    try {
+        fssync.unlinkSync('./inputFile/input.txt');
+        console.log(`File ./inputFile/input.txt deleted successfully.`);
+    } catch (err) {
+        console.error(`Error deleting the file: ${err}`);
+    }
+
+});
 
 const PORT=3001;
 app.listen(PORT, function(){console.log('Server listening on port '+PORT)});
