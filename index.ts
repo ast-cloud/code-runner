@@ -193,6 +193,10 @@ app.post('/java', async (req, res)=>{
         res.json({'error':'Runtime error', 'output':String(runJavaCodeResult.stderr)});
         return;
     }
+    else if(runJavaCodeResult.status!=0){
+        res.json({'error':'Compilation error', 'output':String(compileResult.stderr)});
+        return;
+    }
     res.status(200).json({'error':'none', 'output': String(runJavaCodeResult.stdout)});
 
     try {
