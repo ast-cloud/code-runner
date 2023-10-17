@@ -248,6 +248,10 @@ app.post('/python', async (req, res)=>{
         res.json({'error':'Runtime error', 'output':String(runPyCodeResult.stderr)});
         return;
     }
+    else if(runPyCodeResult.status!=0){
+        res.json({'error':'Compilation error', 'output':String(runPyCodeResult.stderr)});
+        return;
+    }
     res.status(200).json({'error':'none', 'output': String(runPyCodeResult.stdout)});
 
     try {
