@@ -153,7 +153,7 @@ app.post('/java', async (req, res)=>{
 
 
     try{
-        await fs.writeFile('./codeFile/code.java', req.body.code);
+        await fs.writeFile('./code.java', req.body.code);
         console.log('Code file created successfully.')
     }catch(e){
         throw e;
@@ -167,7 +167,7 @@ app.post('/java', async (req, res)=>{
     }
     
 
-    const compileResult = spawnSync('javac', ['./codeFile/code.java']);
+    const compileResult = spawnSync('javac', ['./code.java']);
 
     if(compileResult.error){
         res.json({'error':'Compilation error', 'output':String(compileResult.error.message)});
@@ -196,14 +196,14 @@ app.post('/java', async (req, res)=>{
     res.status(200).json({'error':'none', 'output': String(runJavaCodeResult.stdout)});
 
     try {
-        fssync.unlinkSync('./codeFile/code.java');
-        console.log(`File ./codeFile/code.java deleted successfully.`);
+        fssync.unlinkSync('./code.java');
+        console.log(`File ./code.java deleted successfully.`);
     } catch (err) {
         console.error(`Error deleting the file: ${err}`);
     }
     try {
-        fssync.unlinkSync('./codeFile/Codetown.class');
-        console.log(`File ./codeFile/Codetown.class deleted successfully.`);
+        fssync.unlinkSync('./Codetown.class');
+        console.log(`File ./Codetown.class deleted successfully.`);
     } catch (err) {
         console.error(`Error deleting the file: ${err}`);
     }
