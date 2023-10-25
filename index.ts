@@ -117,7 +117,7 @@ app.post('/cpp', async (req, res)=>{
     console.log('Code compiled successfully : g++ process exited with code '+compileResult.status);
 
     const runCPPCodeResult = spawnSync('./codeFile/cppExecutable', {input: fssync.readFileSync('./inputFile/input.txt'), encoding: 'utf-8'});
-
+    console.log(' runCPPCodeResult.output - ', runCPPCodeResult.output);
     if(runCPPCodeResult.error){
         res.json({'error':'Runtime error', 'output':String(runCPPCodeResult.error.message)});
         return;
