@@ -48,7 +48,7 @@ app.post('/c', async (req, res)=>{
     }
     console.log('Code compiled successfully : gcc process exited with code '+compileResult.status);
     
-    const runCCodeResult = spawnSync('./codeFile/cExecutable', {input: fssync.readFileSync('./inputFile/input.txt'), encoding: 'utf-8'});
+    const runCCodeResult = spawnSync('./codeFile/cExecutable', {input: fssync.readFileSync('./inputFile/input.txt'), encoding: 'utf-8', shell: true});
     
     if(runCCodeResult.error){
         res.json({'error':'Runtime error', 'output':String(runCCodeResult.error.message)});
@@ -116,7 +116,7 @@ app.post('/cpp', async (req, res)=>{
     }
     console.log('Code compiled successfully : g++ process exited with code '+compileResult.status);
 
-    const runCPPCodeResult = spawnSync('./codeFile/cppExecutable', {input: fssync.readFileSync('./inputFile/input.txt'), encoding: 'utf-8'});
+    const runCPPCodeResult = spawnSync('./codeFile/cppExecutable', {input: fssync.readFileSync('./inputFile/input.txt'), encoding: 'utf-8', shell: true});
     console.log(' runCPPCodeResult.output - ', runCPPCodeResult.output);
     if(runCPPCodeResult.error){
         res.json({'error':'Runtime error', 'output':String(runCPPCodeResult.error.message)});
@@ -187,7 +187,7 @@ app.post('/java', async (req, res)=>{
     }
     console.log('Code compiled successfully : javac process exited with code '+compileResult.status);
 
-    const runJavaCodeResult = spawnSync('java', ['Codetown'], {input: fssync.readFileSync('./inputFile/input.txt'), encoding: 'utf-8'});
+    const runJavaCodeResult = spawnSync('java', ['Codetown'], {input: fssync.readFileSync('./inputFile/input.txt'), encoding: 'utf-8', shell: true});
 
     if(runJavaCodeResult.error){
         res.json({'error':'Runtime error', 'output':String(runJavaCodeResult.error.message)});
@@ -242,7 +242,7 @@ app.post('/python', async (req, res)=>{
     }
     
 
-    const runPyCodeResult = spawnSync('python3', ['./codeFile/code.py'], {input: fssync.readFileSync('./inputFile/input.txt'), encoding:'utf-8'});
+    const runPyCodeResult = spawnSync('python3', ['./codeFile/code.py'], {input: fssync.readFileSync('./inputFile/input.txt'), encoding:'utf-8', shell: true});
     
     if(runPyCodeResult.error){
         res.json({'error':'Runtime error', 'output':String(runPyCodeResult.error.message)});
