@@ -126,6 +126,10 @@ app.post('/cpp', async (req, res)=>{
         res.json({'error':'Runtime error', 'output':String(runCPPCodeResult.stderr)});
         return;
     }
+    else if(runCPPCodeResult.status!=0){
+        res.json({'error':'Runtime error', 'output':String(runCPPCodeResult.stderr)});
+        return;
+    }
     res.status(200).json({'error':'none', 'output': String(runCPPCodeResult.stdout)});
 
     try {
