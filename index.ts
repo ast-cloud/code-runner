@@ -21,14 +21,16 @@ app.post('/c', async (req, res)=>{
         await fs.writeFile('./codeFile/code.c', req.body.code);
         console.log('Code file created successfully.')
     }catch(e){
-        throw e;
+        console.error('Error writing code file:', e);
+        return;
     }
 
     try{
         await fs.writeFile('./inputFile/input.txt', req.body.input);
         console.log('Input file created successfully.')
     }catch(e){
-        throw e;
+        console.error('Error writing input file:', e);
+        return;
     }
 
 
@@ -89,14 +91,16 @@ app.post('/cpp', async (req, res)=>{
         await fs.writeFile('./codeFile/code.cpp', req.body.code);
         console.log('Code file created successfully.')
     }catch(e){
-        throw e;
+        console.error('Error writing code file:', e);
+        return;
     }
 
     try{
         await fs.writeFile('./inputFile/input.txt', req.body.input);
         console.log('Input file created successfully.')
     }catch(e){
-        throw e;
+        console.error('Error writing input file:', e);
+        return;
     }
     
 
@@ -160,14 +164,16 @@ app.post('/java', async (req, res)=>{
         await fs.writeFile('./code.java', req.body.code);
         console.log('Code file created successfully.')
     }catch(e){
-        throw e;
+        console.error('Error writing code file:', e);
+        return;
     }
 
     try{
         await fs.writeFile('./inputFile/input.txt', req.body.input);
         console.log('Input file created successfully.')
     }catch(e){
-        throw e;
+        console.error('Error writing input file:', e);
+        return;
     }
     
 
@@ -231,14 +237,16 @@ app.post('/python', async (req, res)=>{
         await fs.writeFile('./codeFile/code.py', req.body.code);
         console.log('Code file created successfully.')
     }catch(e){
-        throw e;
+        console.error('Error writing code file:', e);
+        return;
     }
 
     try{
         await fs.writeFile('./inputFile/input.txt', req.body.input);
         console.log('Input file created successfully.')
     }catch(e){
-        throw e;
+        console.error('Error writing input file:', e);
+        return;
     }
     
 
